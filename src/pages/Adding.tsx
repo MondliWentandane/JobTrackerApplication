@@ -150,10 +150,10 @@ const mainStyle: React.CSSProperties = {
 
 const boxStyle: React.CSSProperties = {
   width: "53%",
-  height: "70%",
+  height: "76%",
   marginLeft: "25%",
   position: "absolute",
-  top: "13%",
+  top: "10%",
   textAlign: "center",
   backdropFilter: "blur(13px)",
   boxShadow: "5px 5px 5px #00a8e8",
@@ -177,7 +177,7 @@ const addBTNst: React.CSSProperties = {
 
 const inputSt: React.CSSProperties = {
   width: "145%",
-  height: "1.5rem",
+  height: "1rem",
   borderRadius: "0.5rem",
 };
 
