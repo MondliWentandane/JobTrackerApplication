@@ -232,8 +232,8 @@ export default Login;
 // ==== My styles below =====
 const allStyle: React.CSSProperties = {
   backgroundColor: "#f7f8f1ff", 
-  height: "45rem", 
-  width: "95.1rem",
+  height: "95vh",
+  width: "99.5vw",
   backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
