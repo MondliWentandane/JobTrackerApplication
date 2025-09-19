@@ -129,7 +129,6 @@ const Login: React.FC = () => {
 
   return (
     <div style={allStyle}>
-      <div style={mainStyle}>
         <div style={sect1Style}>
           <div style={{paddingLeft:"7%"}}>
             <h1 style={{fontSize:"6rem"}}>Welcome <br />Back</h1>
@@ -224,7 +223,6 @@ const Login: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   )
 }
@@ -235,35 +233,29 @@ export default Login;
 const allStyle: React.CSSProperties = {
   backgroundColor: "#f7f8f1ff", 
   height: "45rem", 
-  width: "97rem",
+  width: "95.1rem",
   backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
-  
-}
-
-const mainStyle: React.CSSProperties = {
-  height: "37rem",
-  width: "100%",
-  marginTop: '5rem',
   display: "inline-flex",
+  gap: "5rem",
   color: "#feffffff",
   fontStyle: '-moz-initial',
-  
-  
 }
 
 const sect1Style: React.CSSProperties = {
-  width: "50%"
+  width: "50%",
+  marginTop: "5%"
 }
 
 const cardStyle: React.CSSProperties = {
   width: "35%",
-  height: "85%",
+  height: "70%",
   boxShadow: "5px 5px 5px #00a8e8",
   marginRight: "20px",
   borderRadius: "20px",
-  backdropFilter: "blur(11px)",       
+  backdropFilter: "blur(11px)",      
+  marginTop: "6%" 
 }
 
 const lblSt: React.CSSProperties = {
