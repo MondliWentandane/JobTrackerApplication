@@ -133,7 +133,7 @@ const Adding: React.FC = () => {
 
 export default Adding;
 
-// ---------- styles ----------
+// Below are my styles ========
 const mainStyle: React.CSSProperties = {
   backgroundColor: "#e6ffabff",
   width: "99.5vw",

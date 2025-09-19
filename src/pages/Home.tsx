@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import bgImg from "../assets/backgroundImg.jpg"
+import bgImg from "../assets/backgroundImg.jpg";
+
 
 interface Job {
   companyName: string;
@@ -10,13 +11,12 @@ interface Job {
   details?: string;
 }
 
-   const Home: React.FC = () => {
+const Home: React.FC = () => {
   const [Jobs, setJobs] = useState<Job[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("jobs");
     if (saved) {
-   
       const parsed: Job[] = JSON.parse(saved).map((j: any) => ({
         ...j,
         dateApp: new Date(j.dateApp),
@@ -30,6 +30,41 @@ interface Job {
     setJobs(update);
     localStorage.setItem("jobs", JSON.stringify(update));
     alert("Successfully Deleted");
+  };
+
+ 
+  const getStatusStyle = (status: Job["status"]): React.CSSProperties => {
+    switch (status) {
+      case "Applied":
+        return {
+          backgroundColor: "#007bff33", 
+          color: "#007bff",
+          fontWeight: "bold",
+          padding: "5px 10px",
+          borderRadius: "8px",
+          textAlign: "center",
+        };
+      case "Pending":
+        return {
+          backgroundColor: "#ffc10733", 
+          color: "#856404",
+          fontWeight: "bold",
+          padding: "5px 10px",
+          borderRadius: "8px",
+          textAlign: "center",
+        };
+      case "Rejected":
+        return {
+          backgroundColor: "#dc354533", 
+          color: "#dc3545",
+          fontWeight: "bold",
+          padding: "5px 10px",
+          borderRadius: "8px",
+          textAlign: "center",
+        };
+      default:
+        return {};
+    }
   };
 
   return (
@@ -50,19 +85,19 @@ interface Job {
           </thead>
           <tbody>
             {Jobs.length === 0 ? (
-              <th>
-                <td colSpan={6}>
+              <tr>
+                <td colSpan={6} style={{ textAlign: "center" }}>
                   No Jobs Application added yet. Please press the add button
                   below on your <strong>Right hand side...</strong>
                 </td>
-              </th>
+              </tr>
             ) : (
               Jobs.map((a, x) => (
                 <tr key={x}>
                   <td>{a.companyName}</td>
                   <td>{a.role}</td>
-                  <td>{a.status}</td>
-                  <td>{a.dateApp.toLocaleDateString()}</td> 
+                  <td style={getStatusStyle(a.status)}>{a.status}</td>
+                  <td>{a.dateApp.toLocaleDateString()}</td>
                   <td>{a.details}</td>
                   <td>
                     <button onClick={() => handleDelete(x)}>Delete</button>
@@ -82,14 +117,14 @@ interface Job {
 
 export default Home;
 
-// ---------- styles ----------
+//===== Below are my styles ======
 const mainStyle: React.CSSProperties = {
   color: "#e3e3e3",
   width: "99.5vw",
   height: "97vh",
   justifyContent: "center",
   alignContent: "center",
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
 };
@@ -102,6 +137,8 @@ const boxStyle: React.CSSProperties = {
   top: "13%",
   backdropFilter: "blur(11px)",
   boxShadow: "5px 5px 5px #00a8e8",
+  padding: "20px",
+  overflowY: "auto",
 };
 
 const addBTNst: React.CSSProperties = {
@@ -121,5 +158,6 @@ const addBTNst: React.CSSProperties = {
 const tblStyle: React.CSSProperties = {
   width: "100%",
   borderCollapse: "separate",
-  borderSpacing: "10px 8px", 
+  borderSpacing: "10px 8px",
+  textAlign: "left",
 };
