@@ -301,7 +301,7 @@ label{
 @media(max-width: 310px){
 
     #allStyle {
-        height: 106vh;
+        height: 100%;
         width: 99.5vw;
         gap: 0rem;
       }
