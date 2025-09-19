@@ -126,10 +126,9 @@ const Registration = () => {
             <tbody>
               <tr>
                 <td>
-                  <label style={lblSt}>
+                  <label>
                     Username: <br />
                     <input
-                      style={inputStyle}
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
@@ -141,10 +140,9 @@ const Registration = () => {
               </tr>
               <tr>
                 <td>
-                  <label style={lblSt}>
+                  <label>
                     Password: <br />
                     <input
-                      style={inputStyle}
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -156,10 +154,9 @@ const Registration = () => {
               </tr>
               <tr>
                 <td>
-                  <label style={lblSt}>
+                  <label>
                     Confirm Password: <br />
                     <input
-                      style={inputStyle}
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -230,22 +227,7 @@ const cardStyle: React.CSSProperties = {
   boxShadow: "5px 5px 5px 4px #00a8e8",
 }
 
-const lblSt: React.CSSProperties = {
-  fontSize: "1.3rem",
-  marginBottom: "10px",
-  display: "block"
-}
 
-const inputStyle: React.CSSProperties = {
-  width: "25rem",
-  height: '1.6rem',
-  borderRadius: "0.5rem",
-  backgroundColor: "#c8ecfaff",
-  boxShadow: "2px 2px 2px",
-  borderColor: "transparent",
-  padding: "5px",
-  marginBottom: "15px"
-}
 
 const btnStyle: React.CSSProperties = {
   marginTop: "4%",

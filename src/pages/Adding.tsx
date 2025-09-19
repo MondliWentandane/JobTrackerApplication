@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import bgImg from "../assets/backgroundImg.jpg"
+import bgImg from "../assets/backgroundImg.jpg";
 
 interface Job {
   companyName: string;
@@ -13,7 +13,7 @@ interface Job {
 const Adding: React.FC = () => {
   const [companyName, setCompanyName] = useState("");
   const [role, setRole] = useState("");
-  const [status, setStatus] = useState<Job["status"]>("Applied"); 
+  const [status, setStatus] = useState<Job["status"]>("Applied");
   const [theDate, setDate] = useState("");
   const [moreDet, setMoreDet] = useState("");
 
@@ -76,14 +76,16 @@ const Adding: React.FC = () => {
               <td>
                 <label>
                   Status: <br />
-                  <input
-                    type="text"
+                  {/* CHANGED: replaced input with a select */}
+                  <select
                     value={status}
-                    onChange={(x) =>
-                      setStatus(x.target.value as Job["status"])
-                    }
+                    onChange={(x) => setStatus(x.target.value as Job["status"])}
                     style={inputSt}
-                  />
+                  >
+                    <option value="Applied">Applied</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
                 </label>
               </td>
             </tr>
@@ -133,7 +135,7 @@ const Adding: React.FC = () => {
 
 export default Adding;
 
-// Below are my styles ========
+// ====== styles ======
 const mainStyle: React.CSSProperties = {
   backgroundColor: "#e6ffabff",
   width: "99.5vw",
@@ -144,7 +146,6 @@ const mainStyle: React.CSSProperties = {
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   color: "#e3e3e3",
-  
 };
 
 const boxStyle: React.CSSProperties = {
@@ -156,7 +157,7 @@ const boxStyle: React.CSSProperties = {
   textAlign: "center",
   backdropFilter: "blur(13px)",
   boxShadow: "5px 5px 5px #00a8e8",
-  borderRadius: "2rem"
+  borderRadius: "2rem",
 };
 
 const addBTNst: React.CSSProperties = {
@@ -171,7 +172,7 @@ const addBTNst: React.CSSProperties = {
   bottom: 20,
   right: 20,
   boxShadow: "1px 1px 6px 1px #00a8e8",
-  borderColor: "#00a8e8"
+  borderColor: "#00a8e8",
 };
 
 const inputSt: React.CSSProperties = {
@@ -199,4 +200,3 @@ const btnStyle: React.CSSProperties = {
   fontSize: "20px",
   lineHeight: "3px",
 };
-

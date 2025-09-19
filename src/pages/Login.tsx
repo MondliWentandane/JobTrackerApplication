@@ -128,11 +128,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={allStyle}>
-        <div style={sect1Style}>
+    <div id='allStyle'>
+        <div id='sec1Style'>
           <div style={{paddingLeft:"7%"}}>
-            <h1 style={{fontSize:"6rem"}}>Welcome <br />Back</h1>
-            <p style={{fontSize:18}}>
+            <h1>Welcome <br />Back</h1>
+            <p>
               We're excited to have you here. JobBuddy is your personal companion for tracking and
               organizing all your job applications in one simple place. Whether you're exploring 
               new opportunities, preparing for interviews, or following up on offers, we help you 
@@ -146,18 +146,14 @@ const Login: React.FC = () => {
           </div>
         </div>
         
-        <div style={cardStyle}>
-          <div style={{paddingLeft:"7%", paddingTop:"8%"}}>
-            <h3 style={{fontSize:"2rem"}}>Login</h3>
-            
-            
+        <div id='cardStyle'>
+          <div style={{paddingLeft:"2%", paddingTop:"3%"}}>
+            <h3>Login</h3>
             {error && (
               <div style={errorStyle}>
                 {error}
               </div>
             )}
-            
-            
             {!hasRegisteredUsers() && (
               <div style={warningStyle}>
                 <p>No users registered yet. Please sign up first!</p>
@@ -169,10 +165,9 @@ const Login: React.FC = () => {
                 <tbody>
                   <tr>
                     <td>
-                      <label style={lblSt}>
+                      <label>
                         Username: <br />
                         <input
-                          style={inputStyle}
                           type="text"
                           value={username}
                           onChange={handleUsernameChange}
@@ -185,10 +180,9 @@ const Login: React.FC = () => {
                   </tr>
                   <tr>
                     <td>
-                      <label style={lblSt}>
+                      <label >
                         Password: <br />
                         <input
-                          style={inputStyle}
                           type="password"
                           value={password}
                           onChange={handlePasswordChange}
@@ -202,14 +196,13 @@ const Login: React.FC = () => {
                   <tr>
                     <td>
                       <button 
-                        type="submit" 
+                        type="submit" id='btnStyle'
                         style={{
-                          ...btnStyle,
                           opacity: isLoading ? 0.6 : 1,
                           cursor: isLoading ? 'not-allowed' : 'pointer'}}
                         disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
                       
-                      <button type="button" onClick={handleReset} style={resetBtnStyle}
+                      <button type="button" onClick={handleReset} id='resetBtnStyle'
                         disabled={isLoading}>Reset</button>
                     </td>
                   </tr>
@@ -219,7 +212,7 @@ const Login: React.FC = () => {
             
             <div style={{marginTop: '20px'}}>
               <p>Don't have an account?</p>
-              <Link to="/signUpD" style={signBtnSt}>Sign Up</Link> 
+              <Link to="/signUpD" id='signBtnSt'>Sign Up</Link> 
             </div>
           </div>
         </div>
@@ -230,87 +223,7 @@ const Login: React.FC = () => {
 export default Login;
 
 // ==== My styles below =====
-const allStyle: React.CSSProperties = {
-  backgroundColor: "#f7f8f1ff", 
-  height: "95vh",
-  width: "99.5vw",
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  display: "inline-flex",
-  gap: "5rem",
-  color: "#feffffff",
-  fontStyle: '-moz-initial',
-}
 
-const sect1Style: React.CSSProperties = {
-  width: "50%",
-  marginTop: "5%"
-}
-
-const cardStyle: React.CSSProperties = {
-  width: "35%",
-  height: "70%",
-  boxShadow: "5px 5px 5px #00a8e8",
-  marginRight: "20px",
-  borderRadius: "20px",
-  backdropFilter: "blur(11px)",      
-  marginTop: "6%" 
-}
-
-const lblSt: React.CSSProperties = {
-  fontSize: "1.3rem",
-  marginBottom: "10px",
-  display: "block"
-}
-
-const inputStyle: React.CSSProperties = {
-  width: "25rem",
-  height: '1.6rem',
-  borderRadius: "0.5rem",
-  backgroundColor: "#daecf3ff",
-  boxShadow: "2px 2px 2px",
-  borderColor: "#00a8e8",
-  padding: "5px",
-  marginBottom: "15px"
-}
-
-const btnStyle: React.CSSProperties = {
-  marginLeft: "20%",
-  marginTop: "5%",
-  width: "35%",
-  height: "2.2rem",
-  borderRadius: "0.5rem",
-  borderColor: "transparent",
-  backgroundColor: "#00a8e8",
-  boxShadow: "2px 2px 2px",
-  fontSize: "1rem",
-  cursor: "pointer",
-  marginRight: "10px",
-  color: '#e3e3e3'
-}
-
-const resetBtnStyle: React.CSSProperties = {
-  marginTop: "5%",
-  width: "25%",
-  height: "2.2rem",
-  borderRadius: "0.5rem",
-  borderColor: "transparent",
-  backgroundColor: "#ff6b6b",
-  boxShadow: "2px 2px 2px",
-  fontSize: "1rem",
-  cursor: "pointer",
-  color: "white"
-}
-
-const signBtnSt: React.CSSProperties = {
-  padding: "7px 35px",
-  borderRadius: "0.5rem",
-  backgroundColor: "transparent",
-  textDecoration: "none",
-  color: "#00a8e8",
-  borderStyle: "solid"
-}
 
 // ======The style below is for the error messages by Mondli
 const errorStyle: React.CSSProperties = {
@@ -343,3 +256,4 @@ const infoStyle: React.CSSProperties = {
   marginTop: "10px",
   display: "inline-block"
 }
+
