@@ -239,7 +239,7 @@ const allStyle: React.CSSProperties = {
   backgroundSize: "cover",
   display: "inline-flex",
   gap: "5rem",
-  color: "#feffffff",
+  color: "#2cd6d6ff",
   fontStyle: '-moz-initial',
 }
 
