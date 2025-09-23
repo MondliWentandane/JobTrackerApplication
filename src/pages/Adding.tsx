@@ -5,7 +5,7 @@ import bgImg from "../assets/backgroundImg.jpg";
 interface Job {
   companyName: string;
   role: string;
-  status: "Applied" | "Pending" | "Rejected";
+  status: "Applied" | "Interview" | "Rejected" | "Accepted";
   dateApp: Date;
   details?: string;
 }
@@ -80,11 +80,11 @@ const Adding: React.FC = () => {
                   <select
                     value={status}
                     onChange={(x) => setStatus(x.target.value as Job["status"])}
-                    style={inputSt}
-                  >
-                    <option value="Applied">Applied</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
+                    style={inputSt}>
+                      <option value="Applied">Applied</option>
+                      <option value="Interview">Interview</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Accepted">Accepted</option>
                   </select>
                 </label>
               </td>
@@ -176,8 +176,8 @@ const addBTNst: React.CSSProperties = {
 };
 
 const inputSt: React.CSSProperties = {
-  width: "145%",
-  height: "1rem",
+  width: "155%",
+  height: "10%",
   borderRadius: "0.5rem",
 };
 

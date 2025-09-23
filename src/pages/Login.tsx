@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+//===== Import the Popup component
+import Popup from '../components/Popup';
 
 interface User {
   id: string;
@@ -20,9 +22,24 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  //===== State for popup management
+  const [popup, setPopup] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'info',
+    onConfirm: () => {}
+  });
+  
   const navigate = useNavigate();
 
-  
   const getUsers = (): User[] => {
     const storedUsers = localStorage.getItem('users');
     if (!storedUsers) return [];
@@ -35,7 +52,6 @@ const Login: React.FC = () => {
     }
   };
 
-  
   const authenticateUser = (username: string, password: string): User | null => {
     const users = getUsers();
     const user = users.find(
@@ -44,8 +60,7 @@ const Login: React.FC = () => {
     return user || null;
   };
 
-  
-  const createLoginSession = (user: User): void => {
+  const createLoginSession = (user: User): void => {   
     const session: LoginSession = {
       userId: user.id,
       username: user.username,
@@ -56,54 +71,101 @@ const Login: React.FC = () => {
     localStorage.setItem('currentSession', JSON.stringify(session));
   };
 
-  
+  // ======Helper function to show popup
+  const showPopup = (title: string, message: string, type: 'success' | 'error' | 'warning' | 'info', onConfirm: () => void) => {
+    setPopup({
+      isOpen: true,
+      title,
+      message,
+      type,
+      onConfirm
+    });
+  };
+
+  //========  Helper function to close popup
+  const closePopup = () => {
+    setPopup(prev => ({ ...prev, isOpen: false }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    
+    //===== Validation
     if (!username.trim()) {
       setError('Username is required');
       setIsLoading(false);
+      //========  Show validation error in popup
+      showPopup(
+        'Validation Error',
+        'Please enter your username to continue.',
+        'warning',
+        closePopup
+      );
       return;
     }
 
     if (!password) {
       setError('Password is required');
       setIsLoading(false);
+      //======= Show validation error in popup
+      showPopup(
+        'Validation Error',
+        'Please enter your password to continue.',
+        'warning',
+        closePopup
+      );
       return;
     }
 
-    
+    // =====Simulate loading delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      
       const authenticatedUser = authenticateUser(username, password);
 
       if (authenticatedUser) {
-        
         createLoginSession(authenticatedUser);
-        
-       
         setError('');
         
-        
-        navigate('/dispJobsD'); 
+        //======= ADDED: Show success popup before navigation
+        showPopup(
+          'Login Successful',
+          `Welcome back, ${authenticatedUser.username}! You will be redirected to your dashboard.`,
+          'success',
+          () => {
+            closePopup();
+            navigate('/dispJobsD');
+          }
+        );
         
       } else {
         setError('Invalid username or password. Please try again.');
+        //=======  Show error popup for invalid credentials
+        showPopup(
+          'Login Failed',
+          'Invalid username or password. Please check your credentials and try again.',
+          'error',
+          closePopup
+        );
       }
     } catch (error) {
       setError('An error occurred during login. Please try again.');
       console.error('Login error:', error);
+      
+      //======= Show error popup for unexpected errors
+      showPopup(
+        'Login Error',
+        'An unexpected error occurred during login. Please try again later.',
+        'error',
+        closePopup
+      );
     }
 
     setIsLoading(false);
   };
 
- 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
     if (error) setError(''); 
@@ -114,107 +176,126 @@ const Login: React.FC = () => {
     if (error) setError('');
   };
 
- 
   const handleReset = () => {
     setUsername('');
     setPassword('');
     setError('');
+    
+    //======== Show confirmation popup for reset
+    showPopup(
+      'Form Reset',
+      'Login form has been cleared successfully.',
+      'info',
+      closePopup
+    );
   };
 
-  
   const hasRegisteredUsers = (): boolean => {
     return getUsers().length > 0;
   };
 
   return (
     <div id='allStyle'>
-        <div id='sec1Style'>
-          <div style={{paddingLeft:"7%"}}>
-            <h1>Welcome <br />Back</h1>
-            <p>
-              We're excited to have you here. JobBuddy is your personal companion for tracking and
-              organizing all your job applications in one simple place. Whether you're exploring 
-              new opportunities, preparing for interviews, or following up on offers, we help you 
-              stay on top of every step in your career journey. Start adding your applications, set reminders, and keep your progress clear and organized — so you can focus on landing the job that's right for you.
-            </p>
-            
-            
-            <div style={infoStyle}>
-              <small>Registered users: {getUsers().length}</small>
-            </div>
+      {/* =======Popup component */}
+      <Popup
+        isOpen={popup.isOpen}
+        title={popup.title}
+        message={popup.message}
+        type={popup.type}
+        onConfirm={popup.onConfirm}
+        confirmText="OK"
+      />
+      
+      <div id='sec1Style'>
+        <div style={{paddingLeft:"7%"}}>
+          <h1>Welcome <br />Back</h1>
+          <p>
+            We're excited to have you here. JobBuddy is your personal companion for tracking and
+            organizing all your job applications in one simple place. Whether you're exploring 
+            new opportunities, preparing for interviews, or following up on offers, we help you 
+            stay on top of every step in your career journey. Start adding your applications, set reminders, and keep your progress clear and organized — so you can focus on landing the job that's right for you.
+          </p>
+          
+          <div style={infoStyle}>
+            <small>Registered users: {getUsers().length}</small>
           </div>
         </div>
-        
-        <div id='cardStyle'>
-          <div style={{paddingLeft:"2%", paddingTop:"3%"}}>
-            <h3>Login</h3>
-            {error && (
-              <div style={errorStyle}>
-                {error}
-              </div>
-            )}
-            {!hasRegisteredUsers() && (
-              <div style={warningStyle}>
-                <p>No users registered yet. Please sign up first!</p>
-              </div>
-            )}
-            
-            <form onSubmit={handleSubmit}>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label>
-                        Username: <br />
-                        <input
-                          type="text"
-                          value={username}
-                          onChange={handleUsernameChange}
-                          placeholder="Enter your username"
-                          disabled={isLoading}
-                          required
-                        />
-                      </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label >
-                        Password: <br />
-                        <input
-                          type="password"
-                          value={password}
-                          onChange={handlePasswordChange}
-                          placeholder="Enter your password"
-                          disabled={isLoading}
-                          required
-                        />
-                      </label>                        
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button 
-                        type="submit" id='btnStyle'
-                        style={{
-                          opacity: isLoading ? 0.6 : 1,
-                          cursor: isLoading ? 'not-allowed' : 'pointer'}}
-                        disabled={isLoading}>{isLoading ? 'Logging in...' : 'Login'}</button>
-                      
-                      <button type="button" onClick={handleReset} id='resetBtnStyle'
-                        disabled={isLoading}>Reset</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-            
-            <div style={{marginTop: '20px'}}>
-              <p>Don't have an account?</p>
-              <Link to="/signUpD" id='signBtnSt'>Sign Up</Link> 
+      </div>
+      
+      <div id='cardStyle'>
+        <div style={{paddingLeft:"2%", paddingTop:"3%"}}>
+          <h1>Login</h1>
+          {error && (
+            <div style={errorStyle}>
+              {error}
             </div>
+          )}
+          {!hasRegisteredUsers() && (
+            <div style={warningStyle}>
+              <p>No users registered yet. Please sign up first!</p>
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit}>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label>
+                      Username: <br />
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={handleUsernameChange}
+                        placeholder="Enter your username"
+                        disabled={isLoading}
+                        required
+                      />
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label >
+                      Password: <br />
+                      <input
+                        type="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        placeholder="Enter your password"
+                        disabled={isLoading}
+                        required
+                      />
+                    </label>                        
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button 
+                      type="submit" id='btnStyle'
+                      style={{
+                        opacity: isLoading ? 0.6 : 1,
+                        cursor: isLoading ? 'not-allowed' : 'pointer'}}
+                      disabled={isLoading}>
+                      {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
+                    
+                    <button type="button" onClick={handleReset} id='resetBtnStyle'
+                      disabled={isLoading}>
+                      Reset
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+          
+          <div style={{marginTop: '20px'}}>
+            <p>Don't have an account?</p>
+            <Link to="/signUpD" id='signBtnSt'>Sign Up</Link> 
           </div>
         </div>
+      </div>
     </div>
   )
 }
@@ -222,7 +303,6 @@ const Login: React.FC = () => {
 export default Login;
 
 // ==== My styles below =====
-
 
 // ======The style below is for the error messages by Mondli
 const errorStyle: React.CSSProperties = {
@@ -255,4 +335,3 @@ const infoStyle: React.CSSProperties = {
   marginTop: "10px",
   display: "inline-block"
 }
-

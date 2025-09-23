@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bgImg from "../assets/backgroundImg.jpg";
 
 
 interface Job {
   companyName: string;
   role: string;
-  status: "Applied" | "Pending" | "Rejected";
+  status: "Applied" | "Interview" | "Rejected" | "Accepted";
   dateApp: Date;
   details?: string;
 }
 
 const Home: React.FC = () => {
   const [Jobs, setJobs] = useState<Job[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = localStorage.getItem("jobs");
@@ -25,7 +26,18 @@ const Home: React.FC = () => {
     }
   }, []);
 
+  const handleLogout= async()=>{
+   localStorage.removeItem("user");
+   sessionStorage.clear();
+
+   navigate("/")
+  }
+
   const handleDelete = (index: number) => {
+    //=== Below I am confirming with the user if they want to delete the job application
+    const isConfirmed = window.confirm("Are your sure you want to delete this Job Application?");
+    if(!isConfirmed) return; //== here I am stopping the delete process if the user changes their minds
+
     const update = Jobs.filter((_, i) => i !== index);
     setJobs(update);
     localStorage.setItem("jobs", JSON.stringify(update));
@@ -37,17 +49,17 @@ const Home: React.FC = () => {
     switch (status) {
       case "Applied":
         return {
-          backgroundColor: "#007bff33", 
-          color: "#007bff",
+          backgroundColor: "#094c9457", 
+          color: "#1284fdff",
           fontWeight: "bold",
           padding: "5px 10px",
           borderRadius: "8px",
           textAlign: "center",
         };
-      case "Pending":
+      case "Interview":
         return {
-          backgroundColor: "#ffc10733", 
-          color: "#856404",
+          backgroundColor: "#aa81053b", 
+          color: "#fac011ff",
           fontWeight: "bold",
           padding: "5px 10px",
           borderRadius: "8px",
@@ -55,8 +67,17 @@ const Home: React.FC = () => {
         };
       case "Rejected":
         return {
-          backgroundColor: "#dc354533", 
-          color: "#dc3545",
+          backgroundColor: "#f10b2233", 
+          color: "#f00c0cff",
+          fontWeight: "bold",
+          padding: "5px 10px",
+          borderRadius: "8px",
+          textAlign: "center",
+        };
+      case "Accepted":
+        return {
+          backgroundColor: "#39f10b33", 
+          color: "#14f00cff",
           fontWeight: "bold",
           padding: "5px 10px",
           borderRadius: "8px",
@@ -70,8 +91,11 @@ const Home: React.FC = () => {
   return (
     <div style={mainStyle}>
       <div style={boxStyle}>
-        <h1>Applications Status Tracker</h1>
+        <div style={{display: "inline-flex"}}>
+        <h1>Applications Status Tracker</h1><button style={logoutBtn} onClick={handleLogout}>Log Out</button>
+        </div>
         <hr />
+        
         <table style={tblStyle}>
           <thead>
             <tr>
@@ -100,16 +124,19 @@ const Home: React.FC = () => {
                   <td>{a.dateApp.toLocaleDateString()}</td>
                   <td>{a.details}</td>
                   <td>
-                    <button onClick={() => handleDelete(x)}>Delete</button>
+                    <Link to="/editPa" style={addBTNst2}>Edit</Link>
+                    <button style={delBTNst2} onClick={() => handleDelete(x)}>Delete</button>
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+        <div style={{display: "inline-flex"}}>
         <Link to="/addP" style={addBTNst}>
           Add
         </Link>
+        </div>
       </div>
     </div>
   );
@@ -149,11 +176,46 @@ const addBTNst: React.CSSProperties = {
   fontSize: "1rem",
   fontWeight: "bold",
   color: "#e7e6e7",
-  position: "absolute",
-  bottom: 20,
-  right: 20,
   boxShadow: "5px 5px 5px #000000ff",
 };
+
+const addBTNst2: React.CSSProperties = {
+  backgroundColor: "transparent",
+  padding: "5px 10px",
+  borderRadius: "3rem",
+  borderColor: "#00a8e8",
+  textDecoration: "none",
+  fontSize: "1rem",
+  fontWeight: "bold",
+  color: "#00a8e8",
+  boxShadow: "5px 5px 5px #000000ff",
+};
+
+const delBTNst2: React.CSSProperties = {
+  backgroundColor: "transparent",
+  padding: "5px 10px",
+  borderRadius: "3rem",
+  borderColor: "#000000ff",
+  textDecoration: "none",
+  fontSize: "1rem",
+  fontWeight: "bold",
+  color: "#f50e0eff",
+  boxShadow: "5px 5px 5px #000000ff",
+};
+
+const logoutBtn: React.CSSProperties={
+    backgroundColor: "transparent",
+    height: "35px",
+  borderRadius: "3rem",
+  borderColor: "#00a6e84f",
+  textDecoration: "none",
+  fontSize: "1rem",
+  fontWeight: "bold",
+  color: "#00a8e8",
+  boxShadow: "5px 5px 5px #000000ff",
+  position: "absolute",
+  right: 10
+}
 
 const tblStyle: React.CSSProperties = {
   width: "100%",

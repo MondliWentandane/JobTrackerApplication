@@ -7,6 +7,9 @@ import Registration from './pages/Registration'
 import Home from './pages/Home'
 import Landing from './pages/Landing'
 import Adding from './pages/Adding'
+import EditStatus from './pages/Edit'
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +21,7 @@ function App() {
           <Route path='/dispJobsD' element={<Home/>}/>
           <Route path='/detailsD' element={<Landing/>} />
           <Route path='/addP' element={<Adding/>}/>
+          <Route path='/editPa' element={<EditStatus/>}/>
         </Routes>
       </main>
       <Footer/>
